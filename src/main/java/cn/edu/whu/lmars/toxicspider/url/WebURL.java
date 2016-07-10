@@ -26,7 +26,7 @@ public class WebURL implements Serializable {
   private String subDomain; //子域名
   private String path; //URL路径
   private String anchor; //此网址的说明<a>anchor</a>
-  private byte priority; //优先级
+  private byte priority; //优先级，数值越小优先级越高
   private String tag; //标签？
 
 

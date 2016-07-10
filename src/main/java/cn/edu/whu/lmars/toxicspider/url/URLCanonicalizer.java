@@ -30,6 +30,7 @@ public class URLCanonicalizer {
   public static String getCanonicalURL(String href, String context) {
 
     try {
+    	//相对路径转为绝对路径
       URL canonicalURL = new URL(UrlResolver.resolveUrl((context == null) ? "" : context, href));
 
       String host = canonicalURL.getHost().toLowerCase();
