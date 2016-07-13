@@ -63,7 +63,7 @@ public final class UrlResolver {
 	 * @return 
 	 * 			解析后的内容
 	 */
-	private static Url parseUrl(final String spec) {
+	public static Url parseUrl(final String spec) {
 		final Url url = new Url();
 		int startIndex = 0;
 		int endIndex = spec.length();
@@ -344,7 +344,7 @@ public final class UrlResolver {
 	/**
 	 * 静态内部类 URL:统一资源定位符
 	 */
-	private static class Url {
+	public static class Url {
 
 		String scheme_;
 		String location_;
@@ -375,6 +375,14 @@ public final class UrlResolver {
 
 		@Override
 		public String toString() {
+			return "Url [scheme_=" + scheme_ + ", location_=" + location_ + ", path_=" + path_ + ", parameters_="
+					+ parameters_ + ", query_=" + query_ + ", fragment_=" + fragment_ + "]";
+		}
+
+		
+		
+		/*@Override
+		public String toString() {
 			final StringBuilder sb = new StringBuilder();
 
 			if (scheme_ != null) {
@@ -401,6 +409,6 @@ public final class UrlResolver {
 				sb.append(fragment_);
 			}
 			return sb.toString();
-		}
+		}*/
 	}
 }
