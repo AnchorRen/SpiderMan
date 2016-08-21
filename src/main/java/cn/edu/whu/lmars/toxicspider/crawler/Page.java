@@ -17,63 +17,17 @@ import cn.edu.whu.lmars.toxicspider.url.WebURL;
  */
 public class Page {
 
-  /**
-   * 网页的URL
-   */
   protected WebURL url;
-
-  /**
-   * 重定向标志
-   */
   protected boolean redirect;
-
-  /**
-   * 要重定向的页面
-   */
   protected String redirectedToUrl;
-
-  /**
-   * 页面访问状态码
-   */
   protected int statusCode;
-
-  /**
-   * 页面内容的二进制形式
-   */
-  protected byte[] contentData;
-
-  /**
-   * 网页的contentType
-   * For example: "text/html; charset=UTF-8"
-   */
-  protected String contentType;
-
-  /**
-   * 网页内容 的编码方式
-   * For example: "gzip"
-   */
-  protected String contentEncoding;
-
-  /**
-   * 网页内容字符集
-   * For example: "UTF-8"
-   */
-  protected String contentCharset;
-
-  /**
-   * 网页内容使用的语言
-   */
-  private String language;
-
-  /**
-   * 请求头信息，即浏览器F12查看请求的Response-Hears 部分
-   */
-  protected Header[] fetchResponseHeaders;
-
-  /**
-   * 解析器解析的数据
-   */
-  protected ParseData parseData;
+  protected byte[] contentData; // 页面内容的二进制形式
+  protected String contentType; // 网页的contentType For example: "text/html; charset=UTF-8"
+  protected String contentEncoding; //网页内容 的编码方式 For example: "gzip"
+  protected String contentCharset; //网页内容字符集 For example: "UTF-8"
+  private String language; // 网页内容使用的语言
+  protected Header[] fetchResponseHeaders; //请求头信息，即浏览器F12查看请求的Response-Hears 部分
+  protected ParseData parseData; // 解析器解析的数据
 
 
   public Page(WebURL url) {

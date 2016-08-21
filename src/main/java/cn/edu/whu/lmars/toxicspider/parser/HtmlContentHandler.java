@@ -8,7 +8,14 @@ import java.util.Map;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
+/**
+ * 
+ * 网页内容解析类，继承DefaultHandler类，
+ * 当使用apace TIKA进行网页内容解析的时候，通过startElement（）和 endElement()
+ * 提取网页中指定 存在链接的标签， href  src 等中的连接，存储到outgoingUrls中。
+ * 
+ * @author REN
+ */
 public class HtmlContentHandler extends DefaultHandler {
 
   private static final int MAX_ANCHOR_LENGTH = 100;
@@ -52,7 +59,7 @@ public class HtmlContentHandler extends DefaultHandler {
     }
   }
 
-  private String base;
+  private String base; //baseURL
   private String metaRefresh;
   private String metaLocation;
   private final Map<String, String> metaTags = new HashMap<>();

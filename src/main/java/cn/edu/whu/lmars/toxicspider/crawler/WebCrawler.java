@@ -25,7 +25,7 @@ import uk.org.lidalia.slf4jext.Logger;
 import uk.org.lidalia.slf4jext.LoggerFactory;
 
 /**
- * WebCrawler 类使一个实现Runable 的类，会被每一个爬虫线程执行。
+ * 爬虫线程类
  * @author REN
  */
 public class WebCrawler implements Runnable {
@@ -229,7 +229,7 @@ public class WebCrawler implements Runnable {
           return;
         }
         try {
-          Thread.sleep(3000);
+          Thread.sleep(3000); //如果没有URL了，那就等待3秒钟。
         } catch (InterruptedException e) {
           logger.error("Error occurred", e);
         }
@@ -241,7 +241,7 @@ public class WebCrawler implements Runnable {
           }
           if (curURL != null) {
             curURL = handleUrlBeforeProcess(curURL);
-            processPage(curURL);
+            processPage(curURL); //最重要的一个
             frontier.setProcessed(curURL);
           }
         }
@@ -274,6 +274,11 @@ public class WebCrawler implements Runnable {
 	// 子类可以通过继承覆盖此方法
   }
 
+  /**
+   * 任务处理函数
+   * 	每个爬虫实例都会执行这个函数处理URL
+   * @param curURL
+   */
   private void processPage(WebURL curURL) {
     PageFetchResult fetchResult = null;
     try {
@@ -281,7 +286,7 @@ public class WebCrawler implements Runnable {
         throw new Exception("Failed processing a NULL url !?");
       }
 
-      fetchResult = pageFetcher.fetchPage(curURL);
+      fetchResult = pageFetcher.fetchPage(curURL); //pageFetcher:网页内容抓取器，使用HttpClient抓取网页内容。
       int statusCode = fetchResult.getStatusCode();
       handlePageStatusCode(curURL, statusCode, EnglishReasonPhraseCatalog.INSTANCE
           .getReason(statusCode, Locale.ENGLISH)); // Finds the status reason for all known statuses
@@ -347,7 +352,7 @@ public class WebCrawler implements Runnable {
           throw new ContentFetchException();
         }
 
-        parser.parse(page, curURL.getURL());
+        parser.parse(page, curURL.getURL()); //对抓取内容进行解析
 
         ParseData parseData = page.getParseData();
         List<WebURL> toSchedule = new ArrayList<>();

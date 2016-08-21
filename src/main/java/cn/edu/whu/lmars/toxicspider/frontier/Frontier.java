@@ -21,7 +21,7 @@ public class Frontier extends Configurable {
   
   protected WorkQueues workQueues;
 
-  protected InProcessPagesDB inProcessPages;
+  protected InProcessPagesDB inProcessPages; //已经加入到爬虫任务中，但是还未处理完的URL。
 
   //同步锁
   protected final Object mutex = new Object();

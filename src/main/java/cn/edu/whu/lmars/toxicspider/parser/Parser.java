@@ -32,8 +32,8 @@ public class Parser extends Configurable {
 
   protected static final Logger logger = LoggerFactory.getLogger(Parser.class);
 
-  private final HtmlParser htmlParser;
-  private final ParseContext parseContext;
+  private final HtmlParser htmlParser; //html解析器
+  private final ParseContext parseContext; //解析上下文对象
 
   public Parser(CrawlConfig config) {
     super(config);
@@ -41,6 +41,14 @@ public class Parser extends Configurable {
     parseContext = new ParseContext();
   }
 
+  /**
+   * 网页内容解析
+   * 	会将解析后的数据存储到Page中
+   * @param page page
+   * @param contextURL 解析的URL
+   * @throws NotAllowedContentException
+   * @throws ParseException
+   */
   public void parse(Page page, String contextURL) throws NotAllowedContentException, ParseException {
     if (Util.hasBinaryContent(page.getContentType())) { // 如果是二进制文件
       BinaryParseData parseData = new BinaryParseData();
@@ -66,17 +74,18 @@ public class Parser extends Configurable {
         } else {
           parseData.setTextContent(new String(page.getContentData(), page.getContentCharset()));
         }
-        parseData.setOutgoingUrls(Net.extractUrls(parseData.getTextContent()));
+        parseData.setOutgoingUrls(Net.extractUrls(parseData.getTextContent()));// 使用Net类中的正则表达式匹配URL
         page.setParseData(parseData);
       } catch (Exception e) {
         logger.error("{}, while parsing: {}", e.getMessage(), page.getWebURL().getURL());
         throw new ParseException();
       }
-    } else { // 如果是HTML文档
+    } else { 
+    	// 如果是HTML文档
       Metadata metadata = new Metadata();
       HtmlContentHandler contentHandler = new HtmlContentHandler();
       try (InputStream inputStream = new ByteArrayInputStream(page.getContentData())) {
-        htmlParser.parse(inputStream, contentHandler, metadata, parseContext);
+        htmlParser.parse(inputStream, contentHandler, metadata, parseContext); //解析Html流，内容存储到contentHandler中
       } catch (Exception e) {
         logger.error("{}, while parsing: {}", e.getMessage(), page.getWebURL().getURL());
         throw new ParseException();
@@ -102,6 +111,10 @@ public class Parser extends Configurable {
       }
 
       int urlCount = 0;
+      /**
+       * 遍历解析到contentHandler
+       * 中的urls,对其进行规范化处理，并处理相对路径问题。
+       */
       for (ExtractedUrlAnchorPair urlAnchorPair : contentHandler.getOutgoingUrls()) {
 
         String href = urlAnchorPair.getHref();
@@ -112,7 +125,7 @@ public class Parser extends Configurable {
         String hrefLoweredCase = href.trim().toLowerCase();
         if (!hrefLoweredCase.contains("javascript:") && !hrefLoweredCase.contains("mailto:") &&
             !hrefLoweredCase.contains("@")) {
-          String url = URLCanonicalizer.getCanonicalURL(href, contextURL);
+          String url = URLCanonicalizer.getCanonicalURL(href, contextURL); //对URL进行规范化
           if (url != null) {
             WebURL webURL = new WebURL();
             webURL.setURL(url);

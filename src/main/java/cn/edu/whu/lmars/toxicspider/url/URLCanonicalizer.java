@@ -23,8 +23,8 @@ public class URLCanonicalizer {
 
   /**
    * 对url进行处理，获取规范化后的URL
-   * @param href
-   * @param context
+   * @param href URL
+   * @param context 父URL
    * @return
    */
   public static String getCanonicalURL(String href, String context) {
